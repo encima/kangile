@@ -1,0 +1,17 @@
+.header {
+  height: 72px;
+}
+
+.card-content {
+  background: #d3cdcd;
+  padding: 4px;
+}
+
+.card {
+  padding: 8px;
+}
+
+.shadow-card {
+  opacity: 50%;
+}
+/*# sourceMappingURL=card.css.map */

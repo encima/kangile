@@ -1,0 +1,13 @@
+.header {
+  height: 72px;
+}
+
+.board-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 90vh;
+  background: #393d54;
+  border-radius: 5px;
+}
+/*# sourceMappingURL=board-container.css.map */
