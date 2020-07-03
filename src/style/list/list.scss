@@ -1,6 +1,7 @@
 @import '../shared/shared.scss';
 
 .board-list{
+    flex: none;
     background: $list-background-color;
     color: $background-color;
     min-width: 250px;
@@ -21,17 +22,20 @@
     }
 
     .board-list-bottom{
-
         padding: 16px 0;
-        
-        .board-list-bottom-add{
-            padding:6px;
-            border-radius: 5px;
-            &:hover{
-                cursor: pointer;
-                background: $card-background-color;
-            }
-        }
-        
     }
+
+    .board-list-bottom-add{
+        padding:6px;
+        border-radius: 5px;
+        &:hover{
+            cursor: pointer;
+            background: $card-background-color;
+        }
+    }
+
+    .board-list-bottom-form-hidden{
+        display:none;
+    }
+    
 }

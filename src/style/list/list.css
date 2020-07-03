@@ -3,6 +3,9 @@
 }
 
 .board-list {
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
   background: #eee2e2;
   color: #282c34;
   min-width: 250px;
@@ -29,13 +32,17 @@
   padding: 16px 0;
 }
 
-.board-list .board-list-bottom .board-list-bottom-add {
+.board-list .board-list-bottom-add {
   padding: 6px;
   border-radius: 5px;
 }
 
-.board-list .board-list-bottom .board-list-bottom-add:hover {
+.board-list .board-list-bottom-add:hover {
   cursor: pointer;
   background: #d3cdcd;
+}
+
+.board-list .board-list-bottom-form-hidden {
+  display: none;
 }
 /*# sourceMappingURL=list.css.map */

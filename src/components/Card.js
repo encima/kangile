@@ -36,7 +36,7 @@ const Card = (props) => {
     onDragOver={dragOver} 
     >
       <div className="card-content">
-        {props.cardTitle}
+        {props.cardName}
       </div>
     </div>
   );

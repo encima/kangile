@@ -1,34 +1,38 @@
 import React from 'react';
 import './style/index.css';
 import List from './components/List';
+import TempList from './components/TempList';
 import Card from './components/Card';
 
 function App() {
-  const [title, setTitle] = React.useState("defaultTitle");
-  const changeTitle = (title) => setTitle(title)
   const [cards, setCards] = React.useState([]);
-  const [listsOfCards, setListsOfCards] = React.useState([[1,2,3,4],[1,2]]);
+  const [listsOfCards, setListsOfCards] = React.useState([
+    //[{name:"karta nr1"},{name:"karta nr2"},{name:"karta nr3"},{name:"karta nr4"}]
+    //,[{name:"karta nr11"},{name:"karta nr12"}]
+  ]);
+  const [listsNames, setListsNames] = React.useState([
+    //"lista pierwsza", "lista druga"
+  ]);
+  const [listAddMenuOpen, setListAddMenuOpen] = React.useState(-1);
+
 
 
   return (
     <div>
-      <header className="page-header">MellowBoard</header>
-      <div className="board-container">
-        {getListsOfCards(setListsOfCards, listsOfCards, addCardToList)}
-        {/* <List listName="list-1" listId="list-1" cards={cards} setCards={setCards} addCard={addCard}> 
-            <Card id="1" cardTitle="card1"/>
-            <Card id="2" cardTitle="card2"/>
-            <Card id="3" cardTitle="card3"/>
-            {getCards(cards)}
-            {getListCards(listsOfCards,0)}
-        </List>
-        <List listName="list-2" listId="list-2" cards={cards} setCards={setCards} addCard={addCard}>
-            <Card id="4" cardTitle="card1"/>
-            <Card id="5" cardTitle="card3"/>
-            {getListCards(listsOfCards,1)}
-        </List> */}
-        {/* <button onClick={()=>{addCardToList(setListsOfCards, listsOfCards, 1)}}>{title}</button> */}
+
+      <header className="page-header">HelloBoard</header>
+      <div className="board-container" onClick={(e) => {
+      if(e.target.classList.contains("board-container")){
+        setListAddMenuOpen(-1)
+      }}}>
+
+        {getListsOfCards(setListsOfCards, listsOfCards, addCardToList, 
+          setListAddMenuOpen, listAddMenuOpen, listsNames)}
+        <TempList setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
+        setListsNames={setListsNames} listsNames={listsNames}
+        addList={addList}/>
       </div>
+      <button onClick={() => {addList(listsOfCards,setListsOfCards)}}>+++</button>
     </div>
   );
 }
@@ -37,7 +41,7 @@ const getCards = (cardArray) => {
   let cards = [];
   for(let card in cardArray){
     cards.push(
-      <Card id={card} cardTitle={`card-${card}`}/>
+      <Card id={card} cardName={`card-${card}`}/>
     )
   }
   return cards;
@@ -47,11 +51,14 @@ const addCard = (setCards, cards) => {
   setCards([...cards, 1])
 }
 
-const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList) => {
+const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList, setListAddMenuOpen, listAddMenuOpen, listsNames) => {
   let lists = [];
   for(let list in listsOfCards)
     lists.push(
-      <List listName={`list-${list}`} listId={`list-${list}`} setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} listIndex={list} addCardToList={addCardToList}> 
+      <List listName={`${listsNames[list]}`} listId={`list-${list}`} 
+      setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
+      listIndex={list} addCardToList={addCardToList}
+      listAddMenuOpen={listAddMenuOpen} setListAddMenuOpen={setListAddMenuOpen}> 
         {getListCards(listsOfCards, list)}
       </List>
       )
@@ -63,17 +70,19 @@ const getListCards = (listsOfCards, listIndex) => {
   let cards = [];
   for(let card in listsOfCards[listIndex]){
     cards.push(
-      <Card id={`list-${listIndex}-card-${card}`} cardTitle={`card-${card}`}/>
+      <Card id={`list-${listIndex}-card-${card}`} cardName={`${listsOfCards[listIndex][card].name}`}/>
     )
   }
   return cards;
 } 
 
-const addCardToList = (setListsOfCards, listsOfCards, listIndex) => {
+const addCardToList = (setListsOfCards, listsOfCards, listIndex, cardName) => {
   setListsOfCards(listsOfCards.map(
     list => {
       if(list == listsOfCards[listIndex])
-        return [...list, 1]
+        return [...list, {
+          name: cardName
+        }]
       else
         return list;
     }
@@ -81,6 +90,10 @@ const addCardToList = (setListsOfCards, listsOfCards, listIndex) => {
   console.log(listsOfCards);
 }
 
+const addList = (setListsOfCards,listsOfCards, setListsNames, listsNames, newListName) =>{
+  setListsOfCards([...listsOfCards, []]);
+  setListsNames([...listsNames, newListName]);
+}
 
 
 
