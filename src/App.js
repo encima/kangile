@@ -14,6 +14,7 @@ function App() {
     //"lista pierwsza", "lista druga"
   ]);
   const [listAddMenuOpen, setListAddMenuOpen] = React.useState(-1);
+  const [tempListAddMenuOpen, setTempListAddMenuOpen] = React.useState(false);
 
 
 
@@ -23,16 +24,18 @@ function App() {
       <header className="page-header">HelloBoard</header>
       <div className="board-container" onClick={(e) => {
       if(e.target.classList.contains("board-container")){
-        setListAddMenuOpen(-1)
+        setListAddMenuOpen(-1);
+        setTempListAddMenuOpen(false);
       }}}>
 
         {getListsOfCards(setListsOfCards, listsOfCards, addCardToList, 
           setListAddMenuOpen, listAddMenuOpen, listsNames)}
         <TempList setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
         setListsNames={setListsNames} listsNames={listsNames}
+        tempListAddMenuOpen={tempListAddMenuOpen} setTempListAddMenuOpen={setTempListAddMenuOpen}
         addList={addList}/>
       </div>
-      <button onClick={() => {addList(listsOfCards,setListsOfCards)}}>+++</button>
+      {/* <button onClick={() => {addList(listsOfCards,setListsOfCards)}}>+++</button> */}
     </div>
   );
 }

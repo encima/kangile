@@ -10,13 +10,15 @@ const TempList = (props) => {
     const listsNames = props.listsNames;
     const setListsNames = props.setListsNames;
     const addList = props.addList;
+    const tempListAddMenuOpen = props.tempListAddMenuOpen;
+    const setTempListAddMenuOpen = props.setTempListAddMenuOpen;
 
     return (
         <div className="board-list">
             
             <div className="board-list-bottom">
-                <span className="board-list-bottom-add" onClick={()=>props.addList(setListsOfCards,listsOfCards,setListsNames,listsNames,"temp")}>+ Add list</span>
-                <div className={"board-list-bottom-form "}>
+                <span className="board-list-bottom-add" onClick={()=>setTempListAddMenuOpen(true)}>+ Add list</span>
+                <div className={tempListAddMenuOpen?"board-list-bottom-form":"board-list-bottom-form-hidden"}>
                     <Formik
                         initialValues={{ listName:"" }}
                         onSubmit={(values, { setSubmitting }) => {
