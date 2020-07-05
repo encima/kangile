@@ -1,0 +1,17 @@
+@import '../shared/shared.scss';
+
+.card-content{
+    background: $card-background-color;
+    padding: 4px;
+    // -webkit-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.5);
+    // -moz-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.5);
+    // box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.5);
+}
+
+.card{
+    padding: 8px;
+}
+
+.shadow-card{
+    opacity: 50%;
+}

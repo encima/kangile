@@ -1,0 +1,41 @@
+@import '../shared/shared.scss';
+
+.board-list{
+    flex: none;
+    background: $list-background-color;
+    color: $background-color;
+    min-width: 250px;
+    max-width: 300px;
+    border-radius: 2px;
+    margin: 16px;
+    height: fit-content;
+
+    .board-list-header{
+        font-size: 3rem;
+        font-weight: bold;
+    }
+    .board-list-card-conatiner{
+        //background-color: $card-background-color;
+        width: 100%;
+        min-height: 50px;
+        margin: auto;
+    }
+
+    .board-list-bottom{
+        padding: 16px 0;
+    }
+
+    .board-list-bottom-add{
+        padding:6px;
+        border-radius: 5px;
+        &:hover{
+            cursor: pointer;
+            background: $card-background-color;
+        }
+    }
+
+    .board-list-bottom-form-hidden{
+        display:none;
+    }
+    
+}

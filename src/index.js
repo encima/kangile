@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './View/App';
 import * as serviceWorker from './serviceWorker';
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:3030";
+
+const socket = socketIOClient(ENDPOINT);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App socket={socket}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
