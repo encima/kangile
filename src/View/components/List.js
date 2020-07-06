@@ -56,13 +56,49 @@ const List = (props) => {
             props.setSocketHit(props.socketHit+1);    
         }
         else if(e.target.className=="card"){
-            console.log(e.target)
-            //e.target.parentElement.appendChild(card);
+            let cards = e.target.parentElement;
+            let position = e.target.offsetTop;
+
+            //Check if card was dragged above or below
+            let heightStart = e.target.offsetTop-8;
+            let heightEnd = e.target.offsetTop+e.target.offsetHeight+8;
+            let newCardPlacement = (heightEnd+heightStart)/2 > e.clientY? "top":"bottom";     
+            console.log(newCardPlacement);
             
-        }else if(e.target.className=="board-list-card-conatiner")
-            console.log();
+            let board = document.querySelector('.board-container');                
+            //Beggining Index
+            let firstCardIndex = Array.prototype.indexOf.call(card.parentElement.children,card);
+            //Beggining List
+            let firstListIndex = Array.prototype.indexOf.call(board.children,card.parentElement.parentElement);
+            console.log(`${firstCardIndex} : ${firstListIndex}`);
+
+            let secondCard = e.target;
+
+            let secondCardIndex = Array.prototype.indexOf.call(secondCard.parentElement.children,secondCard);
+            //Finish list index
+            let secondListIndex = Array.prototype.indexOf.call(board.children,secondCard.parentElement.parentElement);
             
-            //e.target.appendChild(card);
+            console.log(`${secondCardIndex} : ${secondListIndex}`);
+            if(newCardPlacement =="top")
+                ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
+            else
+                ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex, false);
+        }else if(e.target.className=="board-list-card-conatiner"){
+            console.log("board is empty");
+            
+            let board = document.querySelector('.board-container');                
+            //Beggining Index
+            let firstCardIndex = Array.prototype.indexOf.call(card.parentElement.children,card);
+            //Beggining List
+            let firstListIndex = Array.prototype.indexOf.call(board.children,card.parentElement.parentElement);
+            console.log(`${firstCardIndex} : ${firstListIndex}`);
+
+            //Finish list index
+            let secondListIndex = Array.prototype.indexOf.call(board.children,e.target.parentElement);
+            console.log(`${firstCardIndex} : ${firstListIndex}`);
+            console.log(secondListIndex);
+            ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, 0);
+        }
     }
 
     const dragOver = (e) => {
@@ -122,8 +158,12 @@ const ListsCardInsert= (setListsOfCards, listsOfCards, firstListIndex, firstCard
         if(index==secondListIndex) {
             //list.slice(secondCardIndex, 0, "second")
             //list.push(second);
-            if(before)
-                list = insertBefore(secondCardIndex,list,first);
+            if(before){
+                if(firstListIndex==secondListIndex && firstCardIndex<secondCardIndex)
+                    list= insertBefore(secondCardIndex-1,list,first);
+                else
+                    list = insertBefore(secondCardIndex,list,first);
+            }
             else
                 list = insertAfter(secondCardIndex,list,first);
         };

@@ -3,11 +3,40 @@ import './style/index.css';
 import List from './components/List';
 import TempList from './components/TempList';
 import Card from './components/Card';
+import Modal from 'react-modal';
 import socketIOClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:3030";
 
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+
+
 function App(props) {
-  const [cards, setCards] = useState([]);
+  const [modalIsOpen,setModalIsOpen] = React.useState(false);
+
+  // function openModal() {
+  //   setIsOpen(true);
+  // }
+  
+  // function afterOpenModal() {
+  //   // references are now sync'd and can be accessed.
+  //   subtitle.style.color = '#f00';
+  // }
+  
+  // function closeModal(){
+  //   setIsOpen(false);
+  // }
+  
+
   const [listsOfCards, setListsOfCards] = useState([
     //[{name:"karta nr1"},{name:"karta nr2"},{name:"karta nr3"},{name:"karta nr4"}]
     //,[{name:"karta nr11"},{name:"karta nr12"}]
@@ -23,7 +52,7 @@ function App(props) {
   useEffect(() => {
      //setSocket(socketIOClient(ENDPOINT));
      socket.on('chat message', (msg)=>{
-       console.log(msg)
+       //console.log(msg)
      })
      socket.on('changeBoard', (payload)=>{
       //  console.log(payload.listsOfCards);
@@ -60,6 +89,18 @@ function App(props) {
         />
       </div>
       {/* <button onClick={() => {arrayStateSwap(setListsOfCards, listsOfCards,0,0,1,1)}}>+++</button> */}
+      <button onClick={()=>setModalIsOpen(true)}>Open Modal</button>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={()=>setModalIsOpen(false)}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+
+          <h2>Hello</h2>
+          <button onClick={()=>setModalIsOpen(false)}>close</button>
+          <div>I am a modal</div>
+        </Modal>
     </div>
   );
 }
@@ -128,9 +169,10 @@ const probeSocket = (socket, listsOfCards, listsNames) => {
   if(listsOfCards.length != 0){
     socket.emit('chat message', "awesome from other app")
     socket.emit('changeBoard', {listsOfCards, listsNames})
-    console.log(listsOfCards)
+    //console.log(listsOfCards)
   }
 }
+
 
 
 
