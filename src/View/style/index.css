@@ -26,3 +26,4 @@ body {
 @import './board-container/board-container.css';
 @import './list/list.css';
 @import './card/card.css';
+@import './card-modal/card-modal-style.css';

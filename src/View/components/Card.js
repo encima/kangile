@@ -2,6 +2,8 @@ import React from 'react';
 
 const Card = (props) => {
 
+  const setModalIsOpen = props.setModalIsOpen;
+
   const dragStart = (e) => {
     const target = e.target;
 
@@ -35,11 +37,21 @@ const Card = (props) => {
     onDragStart={dragStart}
     onDragOver={dragOver} 
     >
-      <div className="card-content">
+      <div className="card-content"
+        onClick={(e) => setModalIsOpen(getModalCard(e))}
+        >
         {props.cardName}
       </div>
     </div>
   );
+}
+
+const getModalCard = (e) =>{
+  const cardIndex = Array.prototype.indexOf.call(e.target.parentElement.parentElement.children,e.target.parentElement)
+  let list = e.target.parentElement.parentElement.parentElement;
+  let board = document.querySelector('.board-container'); 
+  const listIndex = Array.prototype.indexOf.call(board.children,list);
+  return {modalListIndex:listIndex, modalCardIndex:cardIndex}
 }
 
 export default Card;

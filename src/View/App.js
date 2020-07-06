@@ -5,6 +5,7 @@ import TempList from './components/TempList';
 import Card from './components/Card';
 import Modal from 'react-modal';
 import socketIOClient from "socket.io-client";
+import CardModal from './components/CardModal';
 const ENDPOINT = "http://127.0.0.1:3030";
 
 const customStyles = {
@@ -21,21 +22,7 @@ const customStyles = {
 
 
 function App(props) {
-  const [modalIsOpen,setModalIsOpen] = React.useState(false);
-
-  // function openModal() {
-  //   setIsOpen(true);
-  // }
-  
-  // function afterOpenModal() {
-  //   // references are now sync'd and can be accessed.
-  //   subtitle.style.color = '#f00';
-  // }
-  
-  // function closeModal(){
-  //   setIsOpen(false);
-  // }
-  
+  const [modalIsOpen,setModalIsOpen] = React.useState(false);  
 
   const [listsOfCards, setListsOfCards] = useState([
     //[{name:"karta nr1"},{name:"karta nr2"},{name:"karta nr3"},{name:"karta nr4"}]
@@ -72,14 +59,15 @@ function App(props) {
     <div>
 
       <header className="page-header">HelloBoard</header>
-      <div className="board-container" onClick={(e) => {
+      <div className="board-container" onMouseDown={(e) => {
       if(e.target.classList.contains("board-container")){
         setListAddMenuOpen(-1);
         setTempListAddMenuOpen(false);
       }}}>
 
         {getListsOfCards(setListsOfCards, listsOfCards, addCardToList, 
-          setListAddMenuOpen, listAddMenuOpen, listsNames, setSocketHit, socketHit)}
+          setListAddMenuOpen, listAddMenuOpen, listsNames, 
+          setSocketHit, socketHit, setModalIsOpen)}
 
         <TempList setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
         setListsNames={setListsNames} listsNames={listsNames}
@@ -89,8 +77,7 @@ function App(props) {
         />
       </div>
       {/* <button onClick={() => {arrayStateSwap(setListsOfCards, listsOfCards,0,0,1,1)}}>+++</button> */}
-      <button onClick={()=>setModalIsOpen(true)}>Open Modal</button>
-        <Modal
+        {/* <Modal
           isOpen={modalIsOpen}
           onRequestClose={()=>setModalIsOpen(false)}
           style={customStyles}
@@ -100,47 +87,36 @@ function App(props) {
           <h2>Hello</h2>
           <button onClick={()=>setModalIsOpen(false)}>close</button>
           <div>I am a modal</div>
-        </Modal>
+        </Modal> */}
+        {getCardModal(listsOfCards,setModalIsOpen,modalIsOpen)}
     </div>
   );
 }
 
-const getCards = (cardArray) => {
-  let cards = [];
-  for(let card in cardArray){
-    cards.push(
-      <Card id={card} cardName={`card-${card}`}/>
-    )
-  }
-  return cards;
-} 
-
-const addCard = (setCards, cards) => {
-  setCards([...cards, 1])
-}
-
-const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList, setListAddMenuOpen, listAddMenuOpen, listsNames, setSocketHit, socketHit) => {
+const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList, setListAddMenuOpen, listAddMenuOpen, listsNames, 
+  setSocketHit, socketHit, setModalIsOpen) => {
   let lists = [];
   for(let list in listsOfCards)
     lists.push(
-      <List listName={`${listsNames[list]}`} listId={`list-${list}`} 
+      <List key={list} listName={`${listsNames[list]}`} listId={`list-${list}`} 
       setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
       listIndex={list} addCardToList={addCardToList}
       listAddMenuOpen={listAddMenuOpen} setListAddMenuOpen={setListAddMenuOpen}
       socketHit={socketHit} setSocketHit={setSocketHit}
       > 
-        {getListCards(listsOfCards, list)}
+        {getListCards(listsOfCards, list, setModalIsOpen)}
       </List>
       )
   
   return lists;
 } 
 
-const getListCards = (listsOfCards, listIndex) => {
+const getListCards = (listsOfCards, listIndex, setModalIsOpen) => {
   let cards = [];
   for(let card in listsOfCards[listIndex]){
     cards.push(
-      <Card id={`list-${listIndex}-card-${card}`} cardName={`${listsOfCards[listIndex][card].name}`}/>
+      <Card key={card} id={`list-${listIndex}-card-${card}`} cardName={`${listsOfCards[listIndex][card].name}`}
+      setModalIsOpen={setModalIsOpen}/>
     )
   }
   return cards;
@@ -165,6 +141,13 @@ const addList = (setListsOfCards,listsOfCards, setListsNames, listsNames, newLis
   setListsNames([...listsNames, newListName]);
 }
 
+const getCardModal = (listsOfCards,setModalIsOpen,modalIsOpen) =>{
+  if(modalIsOpen.modalListIndex != undefined && modalIsOpen.modalCardIndex != undefined && listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex] != undefined)
+    return <CardModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} cardData={listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex]}/>
+  else 
+    return
+}
+
 const probeSocket = (socket, listsOfCards, listsNames) => {
   if(listsOfCards.length != 0){
     socket.emit('chat message', "awesome from other app")
@@ -172,6 +155,7 @@ const probeSocket = (socket, listsOfCards, listsNames) => {
     //console.log(listsOfCards)
   }
 }
+
 
 
 
