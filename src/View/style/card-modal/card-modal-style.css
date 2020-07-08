@@ -20,6 +20,13 @@
   outline-width: 0px;
 }
 
+.card-modal .modal-header-input {
+  display: block;
+  width: 100%;
+  background-color: #ffffff00;
+  border: 0px;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;

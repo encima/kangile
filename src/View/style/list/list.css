@@ -18,8 +18,29 @@
 }
 
 .board-list .board-list-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.board-list .board-list-header .board-list-header-input {
   font-size: 3rem;
   font-weight: bold;
+  font-family: Segoe UI;
+  color: black;
+  border: 0px;
+  text-align: left;
+  width: 80%;
+  background-color: #00000000;
+  padding: 0 16px;
+}
+
+.board-list .board-list-header .board-list-header-delete {
+  width: 20%;
+  background-color: red;
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: Segoe UI;
 }
 
 .board-list .board-list-card-conatiner {

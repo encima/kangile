@@ -1,17 +1,69 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom'
 import Card from './Card';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 
 const List = (props) => {
+    console.log()
+    const [listName,setListName] = useState();
+    const [listNameInput,setListNameInput] = useState("");
 
-    const listsOfCards = props.listsOfCards;
-    const setListsOfCards = props.setListsOfCards;
-    const listIndex = props.listIndex;
-    const setListAddMenuOpen = props.setListAddMenuOpen;
-    const listAddMenuOpen = props.listAddMenuOpen;
+    // function handleListNameInput(e){
+    //     setListNameInput(e.target.value);
+    // }
 
+    useEffect(()=>{
+        setListNameInput(props.listName);    
+    },[props.listName]);
+
+    const setListNameOnEnter = (e) =>{
+        if(e.keyCode==13 && listNameInput != ""){
+            //setListName(listNameInput);
+            setListsNames(listsNames.map(
+                (currentListName,index) => {
+                    if(listIndex==index)
+                        return listNameInput;
+                    return currentListName
+                }
+            ));
+            e.target.blur()
+            setSocketHit(socketHit+1);
+        }
+    }
+
+    const setListNameOnBlur = () =>{
+        if(listNameInput != ""){
+            //setListName(listNameInput);
+            setListsNames(listsNames.map(
+                (currentListName,index) => {
+                    if(listIndex==index)
+                        return listNameInput;
+                    return currentListName
+                }
+            ));
+            setSocketHit(socketHit+1);
+        }
+    }
+
+    const deleteList = () =>{
+        setListsNames(listsNames.filter((name,index) =>(name!=listName && index!=listIndex)));
+        setListsOfCards(listsOfCards.filter((list,index) => index!=listIndex));
+        setSocketHit(socketHit+1);
+    }
+
+    
+
+
+    // const listsOfCards = props.listsOfCards;
+    // const setListsOfCards = props.setListsOfCards;
+    // const listIndex = props.listIndex;
+    // const setListAddMenuOpen = props.setListAddMenuOpen;
+    // const listAddMenuOpen = props.listAddMenuOpen;
+    const {listsOfCards, setListsOfCards, listIndex, 
+        setListAddMenuOpen, listAddMenuOpen, 
+        setSocketHit, socketHit,
+        setListsNames, listsNames} = props;
 
     const drop = (e) => {
         e.preventDefault();
@@ -19,12 +71,9 @@ const List = (props) => {
 
         const card = document.getElementById(card_id);
         card.style.display= 'block';
-
-        
-
-        
-            
-        if(e.target.className=="card-content"){
+         
+        if(card == e.target.parentElement) return;
+        else if(e.target.className=="card-content"){
             //e.target.parentElement.parentElement.appendChild(card);
             let cards = e.target.parentElement.parentElement;
             let position = e.target.offsetTop;
@@ -52,8 +101,6 @@ const List = (props) => {
                 ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
             else
                 ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex, false);
-        
-            props.setSocketHit(props.socketHit+1);    
         }
         else if(e.target.className=="card"){
             let cards = e.target.parentElement;
@@ -99,19 +146,28 @@ const List = (props) => {
             console.log(secondListIndex);
             ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, 0);
         }
+        props.setSocketHit(props.socketHit+1);    
+
     }
 
     const dragOver = (e) => {
         e.preventDefault();
-        //console.log(e)
-
     }
 
 
 
     return (
         <div className="board-list">
-            <header className="board-list-header">{props.listName}</header>
+            {/* <header className="board-list-header">{listName}</header> */}
+            <div className="board-list-header">
+                <input type="text" className="board-list-header-input"
+                value={listNameInput} 
+                onChange={(e) => setListNameInput(e.target.value)} 
+                onBlur={()=>setListNameOnBlur()}
+                onKeyDown={(e)=>{setListNameOnEnter(e)}}>
+                </input>
+                <div className="board-list-header-delete" onClick={()=>deleteList()}>X</div>
+            </div>
             <div className="board-list-card-conatiner" 
             id={`list-${props.listId}`}
             onDrop={drop}
@@ -181,6 +237,40 @@ let insertAfter = ( index, array, item  ) => {
     array.splice( index+1, 0, item );
     return array;
 };
+
+// const setListNameOnEnter = (e, setListName, listNameInput) =>{
+//     if(e.keyCode==13 && listNameInput != ""){
+//         setListName(listNameInput);
+//         e.target.blur()
+//     }
+// }
+
+// const setListNameOnBlur = (setListName, listNameInput) =>{
+//     if(listNameInput != "")
+//         setListName(listNameInput);
+// }
+
+// const setListNameOnEnter = (e, setListsNames, listsNames, listIndex, setListName, listNameInput, setSocketHit, socketHit) =>{
+//     if(e.keyCode==13 && listNameInput != ""){
+//         setListName(listNameInput);
+//         setListsNames(listsNames.map(
+//             currentListName => {
+//                 if(listsNames[listIndex]==currentListName)
+//                     return listNameInput;
+//                 return currentListName
+//             }
+//         ));
+//         e.target.blur()
+//         setSocketHit(socketHit+1);
+//     }
+// }
+
+// const setListNameOnBlur = (setListsNames, listsNames, listIndex, setListName, listNameInput, setSocketHit, socketHit) =>{
+//     if(listNameInput != ""){
+//         setListName(listNameInput);
+//         setSocketHit(socketHit+1);
+//     }
+// }
 
 
 

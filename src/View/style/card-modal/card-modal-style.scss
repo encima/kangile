@@ -15,6 +15,13 @@
   &:focus{
     outline-width: 0px;
   }
+
+  .modal-header-input{
+    display: block;
+    width: 100%;
+    background-color: #ffffff00;
+    border: 0px;
+  }
 }
 
 .modal-overlay {
