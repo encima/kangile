@@ -3,8 +3,14 @@
 }
 
 .card-content {
-  background: #d3cdcd;
+  background: white;
   padding: 4px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  text-align: left;
+  padding: 6px 12px;
 }
 
 .card {

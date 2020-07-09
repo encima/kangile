@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom'
 import Card from './Card';
+import Clear from '../../images/clear.svg';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 
@@ -160,13 +161,16 @@ const List = (props) => {
         <div className="board-list">
             {/* <header className="board-list-header">{listName}</header> */}
             <div className="board-list-header">
-                <input type="text" className="board-list-header-input"
+                <textarea type="text" className="board-list-header-input"
                 value={listNameInput} 
                 onChange={(e) => setListNameInput(e.target.value)} 
                 onBlur={()=>setListNameOnBlur()}
                 onKeyDown={(e)=>{setListNameOnEnter(e)}}>
-                </input>
-                <div className="board-list-header-delete" onClick={()=>deleteList()}>X</div>
+                </textarea>
+                {/* <div className="board-list-header-delete" onClick={()=>deleteList()}>X</div> */}
+                <div className="list-delete-container" onClick={()=>deleteList()}>
+                    <img src={Clear} className="list-delete"></img>    
+                </div>  
             </div>
             <div className="board-list-card-conatiner" 
             id={`list-${props.listId}`}
@@ -176,7 +180,7 @@ const List = (props) => {
             {props.children}
             </div>
             <div className="board-list-bottom">
-                <span className="board-list-bottom-add" onClick={()=>{setListAddMenuOpen(listIndex)}}>+ Add card</span>
+                <div className={listAddMenuOpen!=listIndex?"board-list-bottom-add":"board-list-bottom-form-hidden"} onClick={()=>{setListAddMenuOpen(listIndex)}}>+ Add card</div>
                 <div className={listAddMenuOpen==listIndex?"board-list-bottom-form":"board-list-bottom-form-hidden"}>
                     <Formik
                         initialValues={{ cardName:'' }}
@@ -193,7 +197,7 @@ const List = (props) => {
                                 <Field type="text" name="cardName"/>
                                 <ErrorMessage name="cardName" component="div" />
                                 <button type="submit" disabled={isSubmitting}>
-                                    Submit
+                                    Add card
                                 </button>                    
                             </Form>
                         )}
@@ -238,39 +242,6 @@ let insertAfter = ( index, array, item  ) => {
     return array;
 };
 
-// const setListNameOnEnter = (e, setListName, listNameInput) =>{
-//     if(e.keyCode==13 && listNameInput != ""){
-//         setListName(listNameInput);
-//         e.target.blur()
-//     }
-// }
-
-// const setListNameOnBlur = (setListName, listNameInput) =>{
-//     if(listNameInput != "")
-//         setListName(listNameInput);
-// }
-
-// const setListNameOnEnter = (e, setListsNames, listsNames, listIndex, setListName, listNameInput, setSocketHit, socketHit) =>{
-//     if(e.keyCode==13 && listNameInput != ""){
-//         setListName(listNameInput);
-//         setListsNames(listsNames.map(
-//             currentListName => {
-//                 if(listsNames[listIndex]==currentListName)
-//                     return listNameInput;
-//                 return currentListName
-//             }
-//         ));
-//         e.target.blur()
-//         setSocketHit(socketHit+1);
-//     }
-// }
-
-// const setListNameOnBlur = (setListsNames, listsNames, listIndex, setListName, listNameInput, setSocketHit, socketHit) =>{
-//     if(listNameInput != ""){
-//         setListName(listNameInput);
-//         setSocketHit(socketHit+1);
-//     }
-// }
 
 
 

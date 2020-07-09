@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import Clear from '../../images/clear.svg';
+import Trash from '../../images/delete.svg';
 
 Modal.setAppElement('#root')
 
@@ -7,7 +9,7 @@ const CardModal = (props) => {
 
     const {modalIsOpen, setModalIsOpen, cardData, setListsOfCards, listsOfCards,setSocketHit,socketHit} = props;
     const [cardDescription, setCardDescription] = useState("");
-    const [cardName, setCardName] = useState("");
+    const [isTextareaOpen, setIsTextAreaOpen] = useState(false);
     const [cardNameInput, setCardNameInput] = useState("");
     
     useEffect(()=>{
@@ -44,7 +46,7 @@ const CardModal = (props) => {
     }
 
     const saveCardDescription = (e) =>{
-        if(e.keyCode==13){
+        //if(e.keyCode==13){
             setListsOfCards(listsOfCards.map((list,listsIndex) =>{
                 if(listsIndex == modalIsOpen.modalListIndex)
                     return list.map((card,cardIndex)=>{
@@ -55,7 +57,11 @@ const CardModal = (props) => {
                 return list
             }));
             setSocketHit(socketHit+1);
-        }
+        //}
+    }
+
+    const cancelCardDescription = () => {
+        setCardDescription(listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex].description);
     }
 
 
@@ -68,22 +74,42 @@ const CardModal = (props) => {
             className="card-modal"
             overlayClassName="modal-overlay"
             >
-            
-            <input type="text" className="modal-header-input"
-                value={cardNameInput} 
-                 onChange={(e) => setCardNameInput(e.target.value)} 
-                 onBlur={()=>setCardNameOnBlur()}
-                // onKeyDown={(e)=>{setListNameOnEnter(e)}}
+            <div className="modal-main-panel">
+                <label //for="card-name-input"
+                 className="modal-header-input-label">Card name:</label>            
+                <input type="text" id="card-name-input" className="modal-header-input"
+                    value={cardNameInput} 
+                    onChange={(e) => setCardNameInput(e.target.value)} 
+                    onBlur={()=>setCardNameOnBlur()}
+                    // onKeyDown={(e)=>{setListNameOnEnter(e)}}
+                    >
+                </input>
+                <label //for="card-description-input" 
+                className="modal-description-label">Card description:</label>            
+                <textarea
+                id="card-description-input"
+                className="modal-description-textarea"
+                value={cardDescription} 
+                onChange={(e) => setCardDescription(e.target.value)}
+                //onBlur={cancelCardDescription}
+                //onKeyDown={(e) => saveCardDescription(e)}
                 >
-            </input>
-            <textarea
-            value={cardDescription} 
-            onChange={(e) => setCardDescription(e.target.value)}
-            //onBlur={saveCardDescription}
-            onKeyDown={(e) => saveCardDescription(e)}>
-            </textarea>
-            <button onClick={()=>saveCardDescription()}>Save</button>
-            <button onClick={()=>deleteCard()}>DELETE</button>
+                </textarea>
+                <div className="modal-description-button-container">
+                    <button onClick={()=>saveCardDescription()} className="modal-button modal-description-button">Save</button>
+                    <button onClick={()=>cancelCardDescription()} className="modal-button modal-description-button">Cancel</button>
+                </div>
+            </div>
+            <div className="modal-side-panel">
+                <div className="modal-exit-container" onClick={()=>setModalIsOpen(false)}>
+                    <img src={Clear} className="modal-exit"></img>    
+                </div>
+                <div onClick={()=>deleteCard()} className="modal-button modal-button-card-delete">
+                    <p>Delete Card</p>
+                    <hr/>
+                <img src={Trash} ></img>    
+                </div>
+            </div>
             </Modal>
         </div>
     );

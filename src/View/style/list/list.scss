@@ -12,9 +12,11 @@
 
     .board-list-header{
         display: flex;
+        height: fit-content;
 
         .board-list-header-input{
-            font-size: 3rem;
+            margin: 4px 8px;
+            font-size: 24px;
             font-weight: bold;
             font-family: Segoe UI;
             color: black;
@@ -22,7 +24,9 @@
             text-align: left;
             width: 80%;
             background-color: #00000000;
-            padding: 0 16px;
+            padding: 4px 8px;
+            resize: none;
+            height: 32px;
         }
     
         .board-list-header-delete{
@@ -31,6 +35,22 @@
             font-size: 3rem;
             font-weight: bold;
             font-family: Segoe UI;
+        }
+
+        .list-delete-container{
+            top:0px;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            margin: 4px;
+            border-radius: 50%;
+                &:hover{
+                cursor: pointer;
+                background-color: rgb(212, 195, 195);
+                }
+            .list-delete{
+                margin: 8px;
+            }
         }
     }
     .board-list-card-conatiner{
@@ -45,11 +65,56 @@
     }
 
     .board-list-bottom-add{
+        width: 90%;
+        margin: auto;
         padding:6px;
         border-radius: 5px;
+        text-align: left;
+        font-size: 16px;
         &:hover{
             cursor: pointer;
-            background: $card-background-color;
+            background-color: $modal-textarea-background-color;
+        }
+    }
+
+    .board-list-bottom-form{
+        form{
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            
+            input{
+                background: $card-background-color;
+                padding: 4px;
+                border-radius: 3px;
+                -webkit-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.5);
+                -moz-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.5);
+                box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.5);
+                font-size: 16px;
+                text-align: left;
+                padding: 6px 12px;
+                border: 0px;
+                &:focus{
+                    outline: none;
+                }
+            }
+
+            button{
+                width: 100px;
+                min-height: 32px;
+                border: 0px;
+                border-radius: 2px;
+                font-weight: bold;
+                color:white;
+                
+                margin-top: 12px;
+                background-color: $success-green;
+
+                &:hover{
+                cursor: pointer;
+                background-color: $success-green-highlight;
+                }
+            }
         }
     }
 

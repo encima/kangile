@@ -9,20 +9,160 @@
   margin-right: -50%;
   transform: translate(-50%, -50%);
   background-color: $list-background-color;
-  color: black;
   padding: 16px;
+  border-radius: 3px;
+  color: $black-text-color;
+  font-family: 'Segoe UI';
+  display: flex;
+  justify-content: space-between;
+  min-width: 768px;
+
+  @media screen and (max-width: 768px){
+    flex-direction: column;
+    min-width: 90%;
+  }
+
 
   &:focus{
     outline-width: 0px;
   }
 
-  .modal-header-input{
-    display: block;
-    width: 100%;
-    background-color: #ffffff00;
+  .modal-button{
+    width: 100px;
+    min-height: 32px;
     border: 0px;
+    border-radius: 2px;
+    font-weight: bold;
+    
+    &:hover{
+      cursor: pointer;
+    }
   }
-}
+
+  .modal-main-panel, .modal-side-panel{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-main-panel{
+    width: 82%;
+
+
+    .modal-header-input-label, .modal-header-input, .modal-description-label{
+      display: block;
+      width: 80%;
+      background-color: #ffffff00;
+      font-size: 20px;
+      text-align: left;
+      padding: 2px 6px;
+      margin: 0px 0;
+    }
+
+    .modal-header-input-label, .modal-description-label{
+      border: 0px;
+      font-weight: 600;
+    }
+    .modal-header-input{
+      display: block;
+      background-color: #ffffff00;
+      border: 0px;
+      color: $black-text-color;
+      font-family: 'Segoe UI';
+
+      &:focus{
+        background-color: white;
+       // padding: 0 6px;
+      }
+    }
+
+    .modal-description-label{
+      margin-top: 32px;
+    }
+    .modal-description-textarea{
+      margin: 0 6px;
+      background-color: $modal-textarea-background-color;
+      border: 0px;
+      border-radius: 5px;
+      resize: none;
+      min-height: 108px;
+      width: 100%;
+      color: $black-text-color;
+      font-family: 'Segoe UI';
+      font-size: 14px;
+      padding: 6px;
+      &:hover{
+        cursor: pointer;
+        background-color: $card-highlight-color;
+      }
+      &:focus{
+        background-color: white;
+        min-height: 108px;
+        &:hover{
+          cursor: text;
+        }
+      }
+      
+    }
+    
+    .modal-description-button-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 200px;
+      margin: 0px 0px;
+      
+      @media screen and (max-width: 200px){
+        flex-direction: column;
+      }
+
+      .modal-description-button{
+        background-color: $success-green;
+        color: white;
+        margin: 12px 6px;
+        
+        &:hover{
+          background-color: $success-green-highlight;
+        }
+      }
+    }
+  }//modal main panel
+
+  .modal-side-panel{
+    
+
+    .modal-exit-container{
+      position: absolute;
+      top:0px;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      margin: 4px;
+      border-radius: 50%;
+        &:hover{
+          cursor: pointer;
+          background-color: rgb(212, 195, 195);
+        }
+      .modal-exit{
+        margin-top: 8px;
+      }
+    }
+    
+
+    .modal-button-card-delete{
+      background-color: $danger-red;
+      color: white;
+      margin-top: 126px;
+      font-size: 13.3px;
+      &:hover{
+        background-color: $danger-red-highlight;
+      }
+
+      @media screen and (max-width: 768px){
+       margin-top: 32px; 
+      }
+    }
+  }//modal side panel
+}//modal
 
 .modal-overlay {
   position: fixed;

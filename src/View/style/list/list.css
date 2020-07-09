@@ -6,7 +6,7 @@
   -webkit-box-flex: 0;
       -ms-flex: none;
           flex: none;
-  background: #eee2e2;
+  background: #f4f5f7;
   color: #282c34;
   min-width: 250px;
   max-width: 300px;
@@ -21,10 +21,14 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 .board-list .board-list-header .board-list-header-input {
-  font-size: 3rem;
+  margin: 4px 8px;
+  font-size: 24px;
   font-weight: bold;
   font-family: Segoe UI;
   color: black;
@@ -32,7 +36,9 @@
   text-align: left;
   width: 80%;
   background-color: #00000000;
-  padding: 0 16px;
+  padding: 4px 8px;
+  resize: none;
+  height: 32px;
 }
 
 .board-list .board-list-header .board-list-header-delete {
@@ -41,6 +47,24 @@
   font-size: 3rem;
   font-weight: bold;
   font-family: Segoe UI;
+}
+
+.board-list .board-list-header .list-delete-container {
+  top: 0px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+  border-radius: 50%;
+}
+
+.board-list .board-list-header .list-delete-container:hover {
+  cursor: pointer;
+  background-color: #d4c3c3;
+}
+
+.board-list .board-list-header .list-delete-container .list-delete {
+  margin: 8px;
 }
 
 .board-list .board-list-card-conatiner {
@@ -54,13 +78,60 @@
 }
 
 .board-list .board-list-bottom-add {
+  width: 90%;
+  margin: auto;
   padding: 6px;
   border-radius: 5px;
+  text-align: left;
+  font-size: 16px;
 }
 
 .board-list .board-list-bottom-add:hover {
   cursor: pointer;
-  background: #d3cdcd;
+  background-color: rgba(9, 30, 66, 0.04);
+}
+
+.board-list .board-list-bottom-form form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 8px;
+}
+
+.board-list .board-list-bottom-form form input {
+  background: white;
+  padding: 4px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  text-align: left;
+  padding: 6px 12px;
+  border: 0px;
+}
+
+.board-list .board-list-bottom-form form input:focus {
+  outline: none;
+}
+
+.board-list .board-list-bottom-form form button {
+  width: 100px;
+  min-height: 32px;
+  border: 0px;
+  border-radius: 2px;
+  font-weight: bold;
+  color: white;
+  margin-top: 12px;
+  background-color: #1ac01a;
+}
+
+.board-list .board-list-bottom-form form button:hover {
+  cursor: pointer;
+  background-color: #14f014;
 }
 
 .board-list .board-list-bottom-form-hidden {
