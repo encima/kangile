@@ -26,7 +26,7 @@ function App(props) {
      })
   }, []);
   useEffect(() =>{
-    probeSocket(socket,listsOfCards,listsNames);
+    probeSocket(socket,listsOfCards,listsNames, socketHit);
   }, [socketHit])
 
 
@@ -42,7 +42,7 @@ function App(props) {
 
         {getListsOfCards(setListsOfCards, listsOfCards, addCardToList, 
           setListAddMenuOpen, listAddMenuOpen, setListsNames, listsNames, 
-          setSocketHit, socketHit, setModalIsOpen)}
+          setSocketHit, socketHit, setModalIsOpen, probeSocket, socket)}
 
         <TempList setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
         setListsNames={setListsNames} listsNames={listsNames}
@@ -57,7 +57,7 @@ function App(props) {
 }
 
 const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList, setListAddMenuOpen, listAddMenuOpen, setListsNames, listsNames, 
-  setSocketHit, socketHit, setModalIsOpen) => {
+  setSocketHit, socketHit, setModalIsOpen, probeSocket, socket) => {
   let lists = [];
   for(let list in listsOfCards)
     lists.push(
@@ -67,6 +67,7 @@ const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList, setListAd
       listAddMenuOpen={listAddMenuOpen} setListAddMenuOpen={setListAddMenuOpen}
       setListsNames={setListsNames} listsNames={listsNames}
       socketHit={socketHit} setSocketHit={setSocketHit}
+      probeSocket={probeSocket} socket={socket}
       > 
         {getListCards(listsOfCards, list, setModalIsOpen)}
       </List>
@@ -115,8 +116,8 @@ const getCardModal = (setListsOfCards, listsOfCards,setModalIsOpen,modalIsOpen, 
     return
 }
 
-const probeSocket = (socket, listsOfCards, listsNames) => {
-  if(listsOfCards.length != 0){
+const probeSocket = (socket, listsOfCards, listsNames, socketHit) => {
+  if(socketHit != 0){
     socket.emit('changeBoard', {listsOfCards, listsNames})
   }
 }
