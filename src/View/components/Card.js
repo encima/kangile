@@ -47,12 +47,10 @@ const Card = (props) => {
 }
 
 const getModalCard = (e) =>{
-  console.log(e)
   const cardIndex = Array.prototype.indexOf.call(e.target.parentElement.parentElement.children,e.target.parentElement)
   let list = e.target.parentElement.parentElement.parentElement;
   let board = document.querySelector('.board-container'); 
   const listIndex = Array.prototype.indexOf.call(board.children,list);
-  console.log(listIndex, cardIndex)
   return {modalListIndex:listIndex, modalCardIndex:cardIndex}
 }
 

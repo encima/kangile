@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import ReactDOM from 'react-dom'
-import Card from './Card';
 import Clear from '../../images/clear.svg';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
@@ -18,7 +16,7 @@ const List = (props) => {
     },[props.listName]);
 
     const setListNameOnEnter = (e) =>{
-        if(e.keyCode==13 && listNameInput != ""){
+        if(e.keyCode===13 && listNameInput !== ""){
             //setListName(listNameInput);
             props.lists[props.listIndex].name = listNameInput
             e.target.blur()
@@ -27,7 +25,7 @@ const List = (props) => {
     }
 
     const setListNameOnBlur = () =>{
-        if(listNameInput != ""){
+        if(listNameInput !== ""){
             props.lists[props.listIndex].name = listNameInput
             setSocketHit(socketHit+1);
         }
@@ -41,18 +39,10 @@ const List = (props) => {
         props.setSocketHit(props.socketHit+1);
     }
 
-    
-
-
-    // const listsOfCards = props.listsOfCards;
-    // const setListsOfCards = props.setListsOfCards;
-    // const listIndex = props.listIndex;
-    // const setListAddMenuOpen = props.setListAddMenuOpen;
-    // const listAddMenuOpen = props.listAddMenuOpen;
-    const {listsOfCards, setListsOfCards, listIndex, 
+    const {listIndex, 
         setListAddMenuOpen, listAddMenuOpen, 
         setSocketHit, socketHit,
-        setListsNames, listsNames} = props;
+        } = props;
 
     const drop = (e) => {
         e.preventDefault();
@@ -61,12 +51,8 @@ const List = (props) => {
         const card = document.getElementById(card_id);
         card.style.display= 'block';
          
-        if(card == e.target.parentElement) return;
-        else if(e.target.className=="card-content"){
-            //e.target.parentElement.parentElement.appendChild(card);
-            let cards = e.target.parentElement.parentElement;
-            let position = e.target.offsetTop;
-            //console.log(e.target);
+        if(card === e.target.parentElement) return;
+        else if(e.target.className==="card-content"){
 
             //Check if card was dragged above or below
             let heightStart = e.target.offsetTop-8;
@@ -86,14 +72,12 @@ const List = (props) => {
             let secondListIndex = Array.prototype.indexOf.call(board.children,secondCard.parentElement.parentElement);
 
             //Insert before or after depending on drag position
-            if(newCardPlacement =="top")
+            if(newCardPlacement ==="top")
               ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
             else
                ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
         }
-        else if(e.target.className=="card"){
-            let cards = e.target.parentElement;
-            let position = e.target.offsetTop;
+        else if(e.target.className==="card"){
 
             //Check if card was dragged above or below
             let heightStart = e.target.offsetTop-8;
@@ -115,11 +99,11 @@ const List = (props) => {
             let secondListIndex = Array.prototype.indexOf.call(board.children,secondCard.parentElement.parentElement);
             
             console.log(`${secondCardIndex} : ${secondListIndex}`);
-            if(newCardPlacement =="top")
+            if(newCardPlacement ==="top")
                 ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
             else
                 ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
-        }else if(e.target.className=="board-list-card-conatiner"){
+        }else if(e.target.className==="board-list-card-conatiner"){
             console.log("board is empty");
             
             let board = document.querySelector('.board-container');                
@@ -157,7 +141,7 @@ const List = (props) => {
                 </textarea>
                 {/* <div className="board-list-header-delete" onClick={()=>deleteList()}>X</div> */}
                 <div className="list-delete-container" onClick={()=>deleteList()}>
-                    <img src={Clear} className="list-delete"></img>    
+                    <img alt="delete" src={Clear} className="list-delete"></img>    
                 </div>  
             </div>
             <div className="board-list-card-conatiner" 
@@ -168,8 +152,8 @@ const List = (props) => {
             {props.children}
             </div>
             <div className="board-list-bottom">
-                <div className={listAddMenuOpen!=listIndex?"board-list-bottom-add":"board-list-bottom-form-hidden"} onClick={()=>{setListAddMenuOpen(listIndex)}}>+ Add card</div>
-                <div className={listAddMenuOpen==listIndex?"board-list-bottom-form":"board-list-bottom-form-hidden"}>
+                <div className={listAddMenuOpen!==listIndex?"board-list-bottom-add":"board-list-bottom-form-hidden"} onClick={()=>{setListAddMenuOpen(listIndex)}}>+ Add card</div>
+                <div className={listAddMenuOpen===listIndex?"board-list-bottom-form":"board-list-bottom-form-hidden"}>
                     <Formik
                         initialValues={{ cardName:'' }}
                         onSubmit={(values, { setSubmitting }) => {

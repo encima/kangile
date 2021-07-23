@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
-import Card from './Card';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const TempList = (props) => {

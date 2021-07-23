@@ -13,9 +13,7 @@ const CardModal = (props) => {
     const [cardPriority, setCardPriority] = useState(-1);
     const [cardEstimate, setCardEstimate] = useState(-1);
     const [cardDescription, setCardDescription] = useState("");
-    const [isTextareaOpen, setIsTextAreaOpen] = useState(false);
     const [cardNameInput, setCardNameInput] = useState("");
-    const numVals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     
     useEffect(()=>{
         setCardNameInput(props.card.name);    
@@ -25,22 +23,24 @@ const CardModal = (props) => {
     },[props.card.name, props.card.description, props.card.estimate, props.card.priority]);
 
     const deleteCard = () =>{
-        setListsOfCards(listsOfCards.map((list,listsIndex) =>{
-            if(listsIndex == modalIsOpen.modalListIndex)
-                return list.filter((card,cardIndex)=>cardIndex != modalIsOpen.modalCardIndex)
-            return list
-        }));
+        props.cards.splice(props.cardIndex, 1);
         setModalIsOpen(false);
         setSocketHit(socketHit+1)
     }
 
+    const saveCard = () => {
+        console.log(Object.assign(props.card, {priority: cardPriority, description: cardDescription, estimate: cardEstimate}))
+        setModalIsOpen(false);
+        setSocketHit(socketHit+1);
+    }
+
     const setCardNameOnBlur = () => {
-        if(cardNameInput != ""){
+        if(cardNameInput !== ""){
             setListsOfCards(listsOfCards.map((list,index) =>
             {
-                if(index == modalIsOpen.modalListIndex)
+                if(index === modalIsOpen.modalListIndex)
                     return list.map((card,index)=>{
-                        if(index == modalIsOpen.modalCardIndex)
+                        if(index === modalIsOpen.modalCardIndex)
                             return {...cardData, name: cardNameInput};
                         else 
                             return card;
@@ -52,23 +52,8 @@ const CardModal = (props) => {
         }
     }
 
-    const saveCardDescription = (e) =>{
-        //if(e.keyCode==13){
-            setListsOfCards(listsOfCards.map((list,listsIndex) =>{
-                if(listsIndex == modalIsOpen.modalListIndex)
-                    return list.map((card,cardIndex)=>{
-                        if(cardIndex == modalIsOpen.modalCardIndex)
-                            return {...cardData, description:cardDescription};
-                        return card;
-                    })
-                return list
-            }));
-            setSocketHit(socketHit+1);
-        //}
-    }
-
     const cancelCardDescription = () => {
-        setCardDescription(listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex].description);
+        // setCardDescription(listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex].description);
     }
 
 
@@ -91,10 +76,22 @@ const CardModal = (props) => {
                     // onKeyDown={(e)=>{setListNameOnEnter(e)}}
                     >
                 </input>
-                {/* <select>
-                for(let val in numVals)
-                    <option value={cardPriority} onChange={(e) => setCardPriority(e.target.value)}>1</option>
-                </select> */}
+                <label>Priority</label>
+                <select value={cardPriority} onChange={(e) => setCardPriority(e.target.value) }>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select> 
+                <label>Estimate</label>
+                <select value={cardEstimate} onChange={(e) => setCardEstimate(e.target.value)} >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>  
                 <label //for="card-description-input" 
                 className="modal-description-label">Card description:</label>            
                 <textarea
@@ -107,18 +104,18 @@ const CardModal = (props) => {
                 >
                 </textarea>
                 <div className="modal-description-button-container">
-                    <button onClick={()=>saveCardDescription()} className="modal-button modal-description-button">Save</button>
+                    <button onClick={()=>saveCard()} className="modal-button modal-description-button">Save</button>
                     <button onClick={()=>cancelCardDescription()} className="modal-button modal-description-button">Cancel</button>
                 </div>
             </div>
             <div className="modal-side-panel">
                 <div className="modal-exit-container" onClick={()=>setModalIsOpen(false)}>
-                    <img src={Clear} className="modal-exit"></img>    
+                    <img src={Clear} alt="clear" className="modal-exit"></img>    
                 </div>
                 <div onClick={()=>deleteCard()} className="modal-button modal-button-card-delete">
                     <p>Delete Card</p>
                     <hr/>
-                <img src={Trash} ></img>    
+                <img src={Trash} alt="delete"></img>    
                 </div>
             </div>
             </Modal>

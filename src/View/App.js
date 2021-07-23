@@ -26,7 +26,7 @@ function App(props) {
      })
   }, []);
   useEffect(() =>{
-    probeSocket(socket,lists, socketHit);
+    probeSocket(socket, lists, socketHit);
   }, [socketHit])
 
 
@@ -50,7 +50,7 @@ function App(props) {
         socketHit={socketHit} setSocketHit={setSocketHit}
         />
       </div>
-        {getCardModal(lists,setModalIsOpen,modalIsOpen,setSocketHit, socketHit)}
+        {getCardModal(lists,setLists, setModalIsOpen,modalIsOpen,setSocketHit, socketHit)}
     </div>
   );
 }
@@ -86,25 +86,26 @@ const getListCards = (list, setModalIsOpen) => {
 } 
 
 const addCardToList = (lists, idx, cardName) => {
-  lists[idx]['cards'].push({id: uid(), name: cardName, priority: -1, effort: -1, description: ""});
+  lists[idx]['cards'].push({id: uid(), name: cardName, priority: -1, estimate: -1, description: ""});
 }
 
 const addList = (setLists, lists, newListName) =>{
   setLists([...lists, {id: uid(), name: newListName, cards:[]}]);
 }
 
-const getCardModal = (lists, setModalIsOpen,modalIsOpen, setSocketHit, socketHit) =>{
+const getCardModal = (lists, setLists, setModalIsOpen,modalIsOpen, setSocketHit, socketHit) =>{
 
-  if(modalIsOpen.modalListIndex != undefined && modalIsOpen.modalCardIndex != undefined && lists[modalIsOpen.modalListIndex].cards[modalIsOpen.modalCardIndex] != undefined)
-    return <CardModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} 
-    setSocketHit={setSocketHit} socketHit={socketHit}
+  if(modalIsOpen.modalListIndex !== undefined && modalIsOpen.modalCardIndex !== undefined && lists[modalIsOpen.modalListIndex].cards[modalIsOpen.modalCardIndex] !== undefined)
+    return <CardModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} lists={lists}
+    setSocketHit={setSocketHit} cards={lists[modalIsOpen.modalListIndex].cards} socketHit={socketHit}
+    cardIdx={modalIsOpen.modalCardIndex} setLists={setLists} listIdx={modalIsOpen.modalListIndex}
     card={lists[modalIsOpen.modalListIndex].cards[modalIsOpen.modalCardIndex]}/>
   else 
     return
 }
 
 const probeSocket = (socket, lists, socketHit) => {
-  if(socketHit != 0){
+  if(socketHit !== 0){
     socket.emit('changeBoard', {lists})
   }
 }
