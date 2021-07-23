@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './style/index.css';
+import {uid} from 'uid';
 import List from './components/List';
 import TempList from './components/TempList';
 import Card from './components/Card';
@@ -11,114 +12,103 @@ const ENDPOINT = "http://127.0.0.1:3030";
 function App(props) {
   const [modalIsOpen,setModalIsOpen] = React.useState(false);  
 
-  const [listsOfCards, setListsOfCards] = useState([
-  ]);
-  const [listsNames, setListsNames] = useState([
-  ]);
+  const [lists, setLists] = useState(() =>[ 'Backlog',
+     'Next In',
+     'In Progress',
+     'Blocked',
+     'To Review',
+     'Done' ]);
   const [listAddMenuOpen, setListAddMenuOpen] = useState(-1);
   const [tempListAddMenuOpen, setTempListAddMenuOpen] = useState(false);
   const [socketHit, setSocketHit] = useState(0);
   const socket = props.socket;
   useEffect(() => {
      socket.on('changeBoard', (payload)=>{
-       setListsOfCards(payload.listsOfCards);
-       setListsNames(payload.listsNames);
+       setLists(payload.lists);
+       console.log(payload)
      })
   }, []);
   useEffect(() =>{
-    probeSocket(socket,listsOfCards,listsNames, socketHit);
+    probeSocket(socket,lists, socketHit);
   }, [socketHit])
 
 
   return (
     <div>
 
-      <header className="page-header">HelloBoard</header>
+      <header className="page-header">Agile Adventures!</header>
       <div className="board-container" onMouseDown={(e) => {
       if(e.target.classList.contains("board-container")){
         setListAddMenuOpen(-1);
         setTempListAddMenuOpen(false);
       }}}>
 
-        {getListsOfCards(setListsOfCards, listsOfCards, addCardToList, 
-          setListAddMenuOpen, listAddMenuOpen, setListsNames, listsNames, 
+        {getListsOfCards(addCardToList, setListAddMenuOpen, listAddMenuOpen, setLists, lists, 
           setSocketHit, socketHit, setModalIsOpen, probeSocket, socket)}
 
-        <TempList setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
-        setListsNames={setListsNames} listsNames={listsNames}
+        <TempList 
+        setLists={setLists} lists={lists}
         tempListAddMenuOpen={tempListAddMenuOpen} setTempListAddMenuOpen={setTempListAddMenuOpen}
         addList={addList}
         socketHit={socketHit} setSocketHit={setSocketHit}
         />
       </div>
-        {getCardModal(setListsOfCards,listsOfCards,setModalIsOpen,modalIsOpen,setSocketHit, socketHit)}
+        {getCardModal(lists,setModalIsOpen,modalIsOpen,setSocketHit, socketHit)}
     </div>
   );
 }
 
-const getListsOfCards = (setListsOfCards, listsOfCards, addCardToList, setListAddMenuOpen, listAddMenuOpen, setListsNames, listsNames, 
+const getListsOfCards = (addCardToList, setListAddMenuOpen, listAddMenuOpen, setLists, lists, 
   setSocketHit, socketHit, setModalIsOpen, probeSocket, socket) => {
-  let lists = [];
-  for(let list in listsOfCards)
-    lists.push(
-      <List key={list} listName={`${listsNames[list]}`} listId={`list-${list}`} 
-      setListsOfCards={setListsOfCards} listsOfCards={listsOfCards} 
-      listIndex={list} addCardToList={addCardToList}
+  let listElements = [];
+  for(let listIdx in lists)
+    listElements.push(
+      <List key={lists[listIdx].id} listName={lists[listIdx].name} listId={`list-${lists[listIdx].id}`} 
+      listIndex={listIdx} addCardToList={addCardToList}
       listAddMenuOpen={listAddMenuOpen} setListAddMenuOpen={setListAddMenuOpen}
-      setListsNames={setListsNames} listsNames={listsNames}
+      setLists={setLists} lists={lists}
       socketHit={socketHit} setSocketHit={setSocketHit}
       probeSocket={probeSocket} socket={socket}
       > 
-        {getListCards(listsOfCards, list, setModalIsOpen)}
+        {getListCards(lists[listIdx], setModalIsOpen)}
       </List>
       )
   
-  return lists;
+  return listElements;
 } 
 
-const getListCards = (listsOfCards, listIndex, setModalIsOpen) => {
+const getListCards = (list, setModalIsOpen) => {
   let cards = [];
-  for(let card in listsOfCards[listIndex]){
+  for(let cardIdx in list.cards){
     cards.push(
-      <Card key={card} id={`list-${listIndex}-card-${card}`} cardName={`${listsOfCards[listIndex][card].name}`}
+      <Card key={list.cards[cardIdx].id} id={`list-${list.name}-card-${list.cards[cardIdx].id}`} cardName={`${list.cards[cardIdx].name}`}
       setModalIsOpen={setModalIsOpen}/>
     )
   }
   return cards;
 } 
 
-const addCardToList = (setListsOfCards, listsOfCards, listIndex, cardName) => {
-  setListsOfCards(listsOfCards.map(
-    list => {
-      if(list == listsOfCards[listIndex])
-        return [...list, {
-          name: cardName
-        }]
-      else
-        return list;
-    }
-  ));
-  console.log(listsOfCards);
+const addCardToList = (lists, idx, cardName) => {
+  lists[idx]['cards'].push({id: uid(), name: cardName, priority: -1, effort: -1, description: ""});
 }
 
-const addList = (setListsOfCards,listsOfCards, setListsNames, listsNames, newListName) =>{
-  setListsOfCards([...listsOfCards, []]);
-  setListsNames([...listsNames, newListName]);
+const addList = (setLists, lists, newListName) =>{
+  setLists([...lists, {id: uid(), name: newListName, cards:[]}]);
 }
 
-const getCardModal = (setListsOfCards, listsOfCards,setModalIsOpen,modalIsOpen, setSocketHit, socketHit) =>{
-  if(modalIsOpen.modalListIndex != undefined && modalIsOpen.modalCardIndex != undefined && listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex] != undefined)
+const getCardModal = (setModalIsOpen,modalIsOpen, setSocketHit, socketHit) =>{
+  if(modalIsOpen.modalListIndex != undefined && modalIsOpen.modalCardIndex != undefined)
+    // && listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex] != undefined)
     return <CardModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} 
-    setListsOfCards={setListsOfCards} listsOfCards={listsOfCards}
-    setSocketHit={setSocketHit} socketHit={socketHit}
-    cardData={listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex]}/>
+    setSocketHit={setSocketHit} socketHit={socketHit}/>
+    // cardData={listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex]}/>
   else 
     return
 }
 
-const probeSocket = (socket, listsOfCards, listsNames, socketHit) => {
+const probeSocket = (socket, lists, socketHit) => {
   if(socketHit != 0){
-    socket.emit('changeBoard', {listsOfCards, listsNames})
+    socket.emit('changeBoard', {lists})
   }
 }
 

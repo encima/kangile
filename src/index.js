@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './View/App';
 import * as serviceWorker from './serviceWorker';
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "https://websocket-board.herokuapp.com/";
+// const ENDPOINT = "https://ws.gwillia.ms/";
+const ENDPOINT = "http://127.0.0.1:3030/";
 
 const socket = socketIOClient(ENDPOINT);
 

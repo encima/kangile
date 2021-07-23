@@ -5,12 +5,17 @@ import Trash from '../../images/delete.svg';
 
 Modal.setAppElement('#root')
 
+
+
 const CardModal = (props) => {
 
     const {modalIsOpen, setModalIsOpen, cardData, setListsOfCards, listsOfCards,setSocketHit,socketHit} = props;
+    const [cardPriority, setCardPriority] = useState(-1);
+    const [cardEstimate, setEstimate] = useState(-1);
     const [cardDescription, setCardDescription] = useState("");
     const [isTextareaOpen, setIsTextAreaOpen] = useState(false);
     const [cardNameInput, setCardNameInput] = useState("");
+    const numVals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     
     useEffect(()=>{
         setCardDescription(cardData.description);    
@@ -84,6 +89,10 @@ const CardModal = (props) => {
                     // onKeyDown={(e)=>{setListNameOnEnter(e)}}
                     >
                 </input>
+                {/* <select>
+                for(let val in numVals)
+                    <option value={cardPriority} onChange={(e) => setCardPriority(e.target.value)}>1</option>
+                </select> */}
                 <label //for="card-description-input" 
                 className="modal-description-label">Card description:</label>            
                 <textarea

@@ -7,8 +7,8 @@ const TempList = (props) => {
 
     const listsOfCards = props.listsOfCards;
     const setListsOfCards = props.setListsOfCards;
-    const listsNames = props.listsNames;
-    const setListsNames = props.setListsNames;
+    const lists = props.lists;
+    const setLists = props.setLists;
     const addList = props.addList;
     const tempListAddMenuOpen = props.tempListAddMenuOpen;
     const setTempListAddMenuOpen = props.setTempListAddMenuOpen;
@@ -23,10 +23,9 @@ const TempList = (props) => {
                         initialValues={{ listName:"" }}
                         onSubmit={(values, { setSubmitting }) => {
                             setTimeout(() => {
-                            console.log(values.listName);
-                            props.addList(setListsOfCards,listsOfCards,setListsNames,listsNames,values.listName);
-                            props.setSocketHit(props.socketHit+1);
-                            setSubmitting(false);
+                                props.addList(props.setLists, props.lists, values.listName);
+                                props.setSocketHit(props.socketHit+1);
+                                setSubmitting(false);
                             }, 50);
                         }}
                         >

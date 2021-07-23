@@ -7,7 +7,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const List = (props) => {
     console.log()
-    const [listName,setListName] = useState();
+    const [lists,setLists] = useState();
     const [listNameInput,setListNameInput] = useState("");
 
     // function handleListNameInput(e){
@@ -48,9 +48,11 @@ const List = (props) => {
     }
 
     const deleteList = () =>{
-        setListsNames(listsNames.filter((name,index) =>(name!=listName && index!=listIndex)));
-        setListsOfCards(listsOfCards.filter((list,index) => index!=listIndex));
-        setSocketHit(socketHit+1);
+        props.lists.forEach((list, index) => {
+            if(list['name'] === props.listName)
+                props.lists.splice(index, 1);
+        });
+        props.setSocketHit(props.socketHit+1);
     }
 
     
@@ -186,7 +188,7 @@ const List = (props) => {
                         initialValues={{ cardName:'' }}
                         onSubmit={(values, { setSubmitting }) => {
                             setTimeout(() => {
-                            props.addCardToList(setListsOfCards,listsOfCards,listIndex,values.cardName)
+                            props.addCardToList(props.lists,props.listIndex,values.cardName)
                             props.setSocketHit(props.socketHit+1);    
                             setSubmitting(false);
                             }, 50);
