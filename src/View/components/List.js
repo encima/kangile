@@ -6,8 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 
 const List = (props) => {
-    console.log()
-    const [lists,setLists] = useState();
+
     const [listNameInput,setListNameInput] = useState("");
 
     // function handleListNameInput(e){
@@ -21,13 +20,7 @@ const List = (props) => {
     const setListNameOnEnter = (e) =>{
         if(e.keyCode==13 && listNameInput != ""){
             //setListName(listNameInput);
-            setListsNames(listsNames.map(
-                (currentListName,index) => {
-                    if(listIndex==index)
-                        return listNameInput;
-                    return currentListName
-                }
-            ));
+            props.lists[props.listIndex].name = listNameInput
             e.target.blur()
             setSocketHit(socketHit+1);
         }
@@ -35,14 +28,7 @@ const List = (props) => {
 
     const setListNameOnBlur = () =>{
         if(listNameInput != ""){
-            //setListName(listNameInput);
-            setListsNames(listsNames.map(
-                (currentListName,index) => {
-                    if(listIndex==index)
-                        return listNameInput;
-                    return currentListName
-                }
-            ));
+            props.lists[props.listIndex].name = listNameInput
             setSocketHit(socketHit+1);
         }
     }
@@ -101,9 +87,9 @@ const List = (props) => {
 
             //Insert before or after depending on drag position
             if(newCardPlacement =="top")
-                ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
+              ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
             else
-                ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex, false);
+               ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
         }
         else if(e.target.className=="card"){
             let cards = e.target.parentElement;
@@ -130,9 +116,9 @@ const List = (props) => {
             
             console.log(`${secondCardIndex} : ${secondListIndex}`);
             if(newCardPlacement =="top")
-                ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
+                ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
             else
-                ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex, false);
+                ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex);
         }else if(e.target.className=="board-list-card-conatiner"){
             console.log("board is empty");
             
@@ -147,7 +133,7 @@ const List = (props) => {
             let secondListIndex = Array.prototype.indexOf.call(board.children,e.target.parentElement);
             console.log(`${firstCardIndex} : ${firstListIndex}`);
             console.log(secondListIndex);
-            ListsCardInsert(setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, 0);
+            ListsCardInsert(props.lists, firstListIndex, firstCardIndex, secondListIndex, 0);
         }
         props.setSocketHit(props.socketHit+1);    
 
@@ -211,38 +197,11 @@ const List = (props) => {
     );
 }
 
-const ListsCardInsert= (setListsOfCards, listsOfCards, firstListIndex, firstCardIndex, secondListIndex, secondCardIndex, before=true ) =>{
-    const first = listsOfCards[firstListIndex][firstCardIndex];
-    const second = listsOfCards[secondListIndex][secondCardIndex];
-    setListsOfCards(listsOfCards.map(
-      (list,index) => {
-        if(index==firstListIndex) list = list.filter(card => card != first);
-        if(index==secondListIndex) {
-            //list.slice(secondCardIndex, 0, "second")
-            //list.push(second);
-            if(before){
-                if(firstListIndex==secondListIndex && firstCardIndex<secondCardIndex)
-                    list= insertBefore(secondCardIndex-1,list,first);
-                else
-                    list = insertBefore(secondCardIndex,list,first);
-            }
-            else
-                list = insertAfter(secondCardIndex,list,first);
-        };
-        return list;
-      } 
-    ));
+const ListsCardInsert= (lists, srcListIndex, srcCardIndex, targetListIndex, targetCardIndex, before=true ) =>{
+    lists[targetListIndex].cards.push(lists[srcListIndex].cards[srcCardIndex])
+    lists[srcListIndex].cards.splice(srcCardIndex,1)
+   
   }
-
-let insertBefore = ( index, array, item  ) => {
-    array.splice( index, 0, item );
-    return array;
-};
-
-let insertAfter = ( index, array, item  ) => {
-    array.splice( index+1, 0, item );
-    return array;
-};
 
 
 

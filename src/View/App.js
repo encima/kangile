@@ -4,10 +4,7 @@ import {uid} from 'uid';
 import List from './components/List';
 import TempList from './components/TempList';
 import Card from './components/Card';
-import Modal from 'react-modal';
-import socketIOClient from "socket.io-client";
 import CardModal from './components/CardModal';
-const ENDPOINT = "http://127.0.0.1:3030";
 
 function App(props) {
   const [modalIsOpen,setModalIsOpen] = React.useState(false);  
@@ -81,7 +78,7 @@ const getListCards = (list, setModalIsOpen) => {
   let cards = [];
   for(let cardIdx in list.cards){
     cards.push(
-      <Card key={list.cards[cardIdx].id} id={`list-${list.name}-card-${list.cards[cardIdx].id}`} cardName={`${list.cards[cardIdx].name}`}
+      <Card key={list.cards[cardIdx].id} card={list.cards[cardIdx]} cardIndex={cardIdx} id={`list-${list.name}-card-${list.cards[cardIdx].id}`}
       setModalIsOpen={setModalIsOpen}/>
     )
   }
@@ -96,12 +93,12 @@ const addList = (setLists, lists, newListName) =>{
   setLists([...lists, {id: uid(), name: newListName, cards:[]}]);
 }
 
-const getCardModal = (setModalIsOpen,modalIsOpen, setSocketHit, socketHit) =>{
-  if(modalIsOpen.modalListIndex != undefined && modalIsOpen.modalCardIndex != undefined)
-    // && listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex] != undefined)
+const getCardModal = (lists, setModalIsOpen,modalIsOpen, setSocketHit, socketHit) =>{
+
+  if(modalIsOpen.modalListIndex != undefined && modalIsOpen.modalCardIndex != undefined && lists[modalIsOpen.modalListIndex].cards[modalIsOpen.modalCardIndex] != undefined)
     return <CardModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} 
-    setSocketHit={setSocketHit} socketHit={socketHit}/>
-    // cardData={listsOfCards[modalIsOpen.modalListIndex][modalIsOpen.modalCardIndex]}/>
+    setSocketHit={setSocketHit} socketHit={socketHit}
+    card={lists[modalIsOpen.modalListIndex].cards[modalIsOpen.modalCardIndex]}/>
   else 
     return
 }

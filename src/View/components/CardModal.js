@@ -11,16 +11,18 @@ const CardModal = (props) => {
 
     const {modalIsOpen, setModalIsOpen, cardData, setListsOfCards, listsOfCards,setSocketHit,socketHit} = props;
     const [cardPriority, setCardPriority] = useState(-1);
-    const [cardEstimate, setEstimate] = useState(-1);
+    const [cardEstimate, setCardEstimate] = useState(-1);
     const [cardDescription, setCardDescription] = useState("");
     const [isTextareaOpen, setIsTextAreaOpen] = useState(false);
     const [cardNameInput, setCardNameInput] = useState("");
     const numVals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     
     useEffect(()=>{
-        setCardDescription(cardData.description);    
-        setCardNameInput(cardData.name);    
-    },[cardData.name, cardData.description]);
+        setCardNameInput(props.card.name);    
+        setCardDescription(props.card.description); 
+        setCardEstimate(props.card.estimate); 
+        setCardPriority(props.card.priority)      
+    },[props.card.name, props.card.description, props.card.estimate, props.card.priority]);
 
     const deleteCard = () =>{
         setListsOfCards(listsOfCards.map((list,listsIndex) =>{
@@ -83,7 +85,7 @@ const CardModal = (props) => {
                 <label //for="card-name-input"
                  className="modal-header-input-label">Card name:</label>            
                 <input type="text" id="card-name-input" className="modal-header-input"
-                    value={cardNameInput} 
+                    value={props.card.name} 
                     onChange={(e) => setCardNameInput(e.target.value)} 
                     onBlur={()=>setCardNameOnBlur()}
                     // onKeyDown={(e)=>{setListNameOnEnter(e)}}

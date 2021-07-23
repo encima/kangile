@@ -5,11 +5,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const TempList = (props) => {
 
-    const listsOfCards = props.listsOfCards;
-    const setListsOfCards = props.setListsOfCards;
-    const lists = props.lists;
-    const setLists = props.setLists;
-    const addList = props.addList;
     const tempListAddMenuOpen = props.tempListAddMenuOpen;
     const setTempListAddMenuOpen = props.setTempListAddMenuOpen;
 

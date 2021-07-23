@@ -40,17 +40,19 @@ const Card = (props) => {
       <div className="card-content"
         onClick={(e) => setModalIsOpen(getModalCard(e))}
         >
-        {props.cardName}
+        {props.card.name}
       </div>
     </div>
   );
 }
 
 const getModalCard = (e) =>{
+  console.log(e)
   const cardIndex = Array.prototype.indexOf.call(e.target.parentElement.parentElement.children,e.target.parentElement)
   let list = e.target.parentElement.parentElement.parentElement;
   let board = document.querySelector('.board-container'); 
   const listIndex = Array.prototype.indexOf.call(board.children,list);
+  console.log(listIndex, cardIndex)
   return {modalListIndex:listIndex, modalCardIndex:cardIndex}
 }
 
